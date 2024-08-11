@@ -1,14 +1,15 @@
 from tkinter import *
 from tkinter import messagebox
-import tkinter as tk
-
 from library_item import LibraryItem
+
+import csv
+import tkinter as tk
 import tkinter.scrolledtext as tkst
 import video_library as lib
 import font_manager as fonts
 
 def set_text(text_area, content):
-    text_area.delete("1.0", END)
+    text_area.delete("1.0", tk.END)
     text_area.insert(1.0, content) 
 
 def errorID():
@@ -20,45 +21,97 @@ class UpdatedVideoDetails():
             self.director = director
             self.rating = rating
 
+#___________GUI_____________#
 class UpdateVideo():
     def __init__(self,window):
         window.geometry("1200x680")
         window.minsize(1200,680)
         window.maxsize(1200,680)
         window.title("Update Videos")
-        self.videoplaylist=[]
 
-        listall_button= Button(window, text="List All Videos",command = self.listall)
-        listall_button.grid(row=0, column=0, padx=10, pady=10)
-            
-        self.video_box = tkst.ScrolledText(window, width=48, height=12, wrap="none")
-        self.video_box.grid(row=1, column=0, padx=10, pady=10)
-                
-        self.Video_ID = Label(window,text="Enter Video ID")
-        self.Video_ID.grid(row=2, column=0, padx=10, pady=10)
-                
-        self.ID_input = Entry(window, width=3)
-        self.ID_input.grid(row=2, column=1, padx=10, pady=10, sticky='E')
+        self.list_txt = tkst.ScrolledText(window, width=60, height=9, wrap="none")
+        self.list_txt.place(x=10, y=10)
 
-        self.label_rating = Label(window, text="Enter New Rating:")
-        self.label_rating.grid(row=4, column=0, padx=10, pady=10)
+        list_videos_btn= Button(window, text="List All Videos", command=self.list_videos_clicked)
+        list_videos_btn.place(x=13, y=228)    
+
+        self.video_txt = tk.Text(window, width=18, height=4, wrap="none")
+        self.video_txt.place(x=620, y=290)
+
+        self.check_video = Button(window,text="Check Video",command = self.check_videos_clicked)
+        self.check_video.place(x=438, y=350)
+
+        search_lbl = Label(window,text="Enter search term")
+        search_lbl.place(x=10, y=290)
+
+        self.search_input = Entry(window, width=22)
+        self.search_input.place(x=230, y=295)
+
+        self.search_button = Button(window, text="Search", command=self.search_clicked)
+        self.search_button.place(x=500, y=290)
+                
+        self.Video_ID = Label(window,text="Enter video number")
+        self.Video_ID.place(x=10, y=353)
+                
+        self.ID_input = Entry(window, width=15)
+        self.ID_input.place(x=245, y=358)
+
+        self.label_rating = Label(window, text="Enter new rating:")
+        self.label_rating.place(x=10, y=416)
 
         self.rating_input = Entry(window, width=3)
-        self.rating_input.grid(row=4, column=1, padx=10, pady=10, sticky='E')
-            
-        self.check_video = Button(window,text="Check Video",command = self.displayinfo)
-        self.check_video.grid(row=0, column=3, padx=10, pady=10)
-            
-        self.Videoinfo_box = tkst.ScrolledText(window, width=38, height=12, wrap="none")
-        self.Videoinfo_box.grid(row=1, column=3, padx=10, pady=10)
+        self.rating_input.place(x=210, y=421)
 
         self.update_button = Button(window, text="Update", command=self.displayupdate)
-        self.update_button.grid(row=5, column=1, padx=10, pady=10)
+        self.update_button.place(x=260, y=416)
+
+        self.status_lbl = tk.Label(window, text="", font=("Helvetica", 10))
+        self.status_lbl.place(x=900, y=10)
+
+        
     
+    #___________search function_____________#
+    def search_clicked(self):
+        library = []
+        with open('info.csv') as csv_file:
+            records = csv_file.readlines()
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            for record in records:
+                fields = record.strip().split(',')
+                LibraryItem = {}
+                LibraryItem['id'] = fields[0]
+                LibraryItem['name'] = fields[1]
+                LibraryItem['director'] = fields[2]
+                LibraryItem['rating'] = fields[3]
+                LibraryItem['play_count'] = fields[4]
+
+                library.append(LibraryItem)
+
+        term = self.search_input.get()
+        result_list = []
+
+        for LibraryItem in library:
+            for val in LibraryItem.values():
+                if isinstance(val, str) and term in val.lower(): # checks if val is a string before attempting to use the "in" operator. 
+                    result_list.append(LibraryItem)
+                    break 
+
+        for LibraryItem in result_list:
+            id = LibraryItem['id']
+            name = lib.get_name(id)
+            director = lib.get_director(id)
+            rating = lib.get_rating(id)
+            play_count = lib.get_play_count(id)
+            video_details = f"{id} {name} - {director} - Rating: {rating} - Plays: {play_count}"
+            set_text(self.list_txt, video_details)
+
+        self.status_lbl.configure(text="Search button was clicked!")
+
     def listall(self):
         showlist = lib.list_all()
-        set_text(self.video_box,showlist)
-
+        set_text(self.check_video,showlist)
+        
+    #___________commands for clicking their corresponding button_____________#
     def displayupdate(self):
         key = self.ID_input.get()
         new_rating = self.rating_input.get()
@@ -68,9 +121,9 @@ class UpdateVideo():
             playcount = lib.get_play_count(key)
             name = lib.get_name(key)
             info = f"{name}\n{director}\nrating: {rating}\nplays: {playcount}"
-            set_text(self.Videoinfo_box,info)
+            set_text(self.video_txt,info)
 
-    def displayinfo(self):
+    def check_videos_clicked(self):
         key = self.ID_input.get()
         name = lib.get_name(key)
         if name is not None:
@@ -78,7 +131,12 @@ class UpdateVideo():
             playcount = lib.get_play_count(key)
             rating = lib.get_rating(key)
             info = f"{name}\n{director}\nrating: {rating}\nplays: {playcount}"
-            set_text(self.Videoinfo_box,info)
+            set_text(self.video_txt,info)
+
+    def list_videos_clicked(self):
+        video_list = lib.list_all()
+        set_text(self.list_txt, video_list)
+        self.status_lbl.configure(text="List Videos button was clicked!")
            
 if __name__== "__main__":
     window = Tk()
