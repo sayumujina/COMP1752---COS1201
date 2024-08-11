@@ -14,46 +14,48 @@ def set_text(text_area, content):
     text_area.delete("1.0", tk.END)
     text_area.insert(1.0, content)
 
+#___________GUI_____________#
 
 class CheckVideos():
     def __init__(self, window):
-        window.geometry("1100x600")
-        window.minsize(1100, 600)
-        window.maxsize(1100, 600)
+        window.geometry("1140x600")
+        window.minsize(1140, 600)
+        window.maxsize(1140, 600)
         window.title("Check Videos")
 
+        self.list_txt = tkst.ScrolledText(window, width=60, height=9, wrap="none")
+        self.list_txt.place(x=10, y=10)
+
         list_videos_btn = tk.Button(window, text="List All Videos", command=self.list_videos_clicked)
-        list_videos_btn.grid(row=0, column=0, padx=10, pady=10)
+        list_videos_btn.place(x=13, y=228)
 
-        enter_lbl = tk.Label(window, text="Enter Video Number")
-        enter_lbl.grid(row=0, column=1, padx=10, pady=10)
-
-        self.input_txt = tk.Entry(window, width=3)
-        self.input_txt.grid(row=0, column=2, padx=10, pady=10)
-
-        check_video_btn = tk.Button(window, text="Check Video", command=self.check_video_clicked)
-        check_video_btn.grid(row=0, column=3, padx=10, pady=10)
-
-        self.list_txt = tkst.ScrolledText(window, width=48, height=12, wrap="none")
-        self.list_txt.grid(row=1, column=0, columnspan=3, sticky="W", padx=10, pady=10)
-
-        self.video_txt = tk.Text(window, width=24, height=4, wrap="none")
-        self.video_txt.grid(row=1, column=3, sticky="NW", padx=10, pady=10)
-
-        search_lbl = Label(window,text="Enter parameters")
-        search_lbl.grid(row=2, column=0, padx=10, pady=10)
+        search_lbl = Label(window,text="Enter search term")
+        search_lbl.place(x=10, y=290)
                 
-        self.search_input = Entry(window, width=30)
-        self.search_input.grid(row=2, column=1, padx=10, pady=10, sticky='E')
-
-        self.status_lbl = tk.Label(window, text="", font=("Helvetica", 10))
-        self.status_lbl.grid(row=3, column=0, columnspan=4, sticky="W", padx=10, pady=10)
+        self.search_input = Entry(window, width=22)
+        self.search_input.place(x=230, y=295)
 
         self.search_button = Button(window, text="Search", command=self.search_clicked)
-        self.search_button.grid(row=2, column=3, columnspan=5, sticky='W')
+        self.search_button.place(x=500, y=290)
+
+        self.Video_ID = tk.Label(window, text="Enter video number")
+        self.Video_ID.place(x=10, y=353)
+
+        self.ID_input = tk.Entry(window, width=15)
+        self.ID_input.place(x=245, y=358)
+
+        self.check_video_button = tk.Button(window, text="Check Video", command=self.check_video_clicked)
+        self.check_video_button.place(x=438, y=350)
+
+        self.status_lbl = tk.Label(window, text="", font=("Helvetica", 10))
+        self.status_lbl.place(x=900, y=10)
+
+        self.video_txt = tk.Text(window, width=18, height=4, wrap="none")
+        self.video_txt.place(x=620, y=290)
 
         self.list_videos_clicked() 
 
+    #___________search function_____________#
     def search_clicked(self):
         library = []
         with open('info.csv') as csv_file:
@@ -90,8 +92,9 @@ class CheckVideos():
 
         self.status_lbl.configure(text="Search button was clicked!")
 
+    #___________commands for clicking their corresponding button_____________#
     def check_video_clicked(self):
-        id = self.input_txt.get()
+        id = self.ID_input.get()
         name = lib.get_name(id)
         if name is not None:
             director = lib.get_director(id)
