@@ -28,7 +28,7 @@ def update_videos_clicked():
 
 #___________ window configuration_____________#
 window = ttk.Window(themename="solar")
-window.geometry("750x200")
+window.geometry("650x180")
 window.title("Video Player")
 
 radio_var = tk.StringVar(value=None)
