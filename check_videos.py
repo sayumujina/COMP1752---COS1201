@@ -78,17 +78,20 @@ class CheckVideos():
         for LibraryItem in library:
             for val in LibraryItem.values():
                 if isinstance(val, str) and term in val.lower(): # checks if val is a string before attempting to use the "in" operator. 
-                    result_list.append(LibraryItem)
+                    id = LibraryItem['id']
+                    name = lib.get_name(id)
+                    director = lib.get_director(id)
+                    rating = lib.get_rating(id)
+                    play_count = lib.get_play_count(id)
+                    item = str(f"{id} {name} - {director} - Rating: {rating} - Plays: {play_count} \n")
+                    result_list.append((item))
                     break 
 
-        for LibraryItem in result_list:
-            id = LibraryItem['id']
-            name = lib.get_name(id)
-            director = lib.get_director(id)
-            rating = lib.get_rating(id)
-            play_count = lib.get_play_count(id)
-            video_details = f"{id} {name} - {director} - Rating: {rating} - Plays: {play_count}"
-            set_text(self.list_txt, video_details)
+        set_text(self.list_txt, result_list)
+
+        if not term:
+            error_msg = ("Please enter a valid search term")
+            set_text(self.list_txt, error_msg)
 
         self.status_lbl.configure(text="Search button was clicked!")
 
@@ -103,7 +106,7 @@ class CheckVideos():
             video_details = f"{name}\n{director}\nRating: {rating}\nPlays: {play_count}"
             set_text(self.video_txt, video_details)
         else:
-            set_text(self.video_txt, f"Video {id} not found")
+            set_text(self.video_txt, "Video not found")
         self.status_lbl.configure(text="Check Video button was clicked!")
 
     def list_videos_clicked(self):
