@@ -28,12 +28,15 @@ def update_videos_clicked():
 
 #___________ window configuration_____________#
 window = ttk.Window(themename="solar")
-window.geometry("850x180")
+window.geometry("900x180")
+window.minsize(900,180)
+window.maxsize(900,180)
 window.title("Video Player")
 style=Style(theme='minty')
 radio_var = tk.StringVar(value=None)
 fonts.configure()
 
+#___________ dark/light mode toggle_____________#
 def night_switch():
     if theme_toggle.get() == 1:
         style.theme_use("solar")
@@ -42,7 +45,7 @@ def night_switch():
 
 theme_toggle = tk.IntVar()
 
-toggle= ttk.Checkbutton(bootstyle='success,round-toggle',text='Night mode',variable=theme_toggle,command=night_switch)
+toggle= ttk.Checkbutton(bootstyle='success,round-toggle',text='Dark/Light mode',variable=theme_toggle,command=night_switch)
 toggle.place(x=650, y=10)
 
 header_lbl = ttk.Label(window, text="Select an option by clicking one of the buttons below")
