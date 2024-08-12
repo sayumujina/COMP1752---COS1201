@@ -55,6 +55,9 @@ class CreateVideolist():
             self.delete_list = Button(window,text="Clear list",command=self.clear_btn_clicked)
             self.delete_list.place(x=466, y=410)
             
+            self.play_count_increment = Text(window, width=3, height=1, wrap="none")
+            self.play_count_increment.place(x=450, y=470)
+
             self.playlist = tkst.ScrolledText(window, width=18, height=9, wrap="none")
             self.playlist.place(x=598, y=290)
 
@@ -89,24 +92,28 @@ class CreateVideolist():
             for LibraryItem in library:
                 for val in LibraryItem.values():
                     if isinstance(val, str) and term in val.lower(): # checks if val is a string before attempting to use the "in" operator. 
-                        result_list.append(LibraryItem)
+                        id = LibraryItem['id']
+                        name = lib.get_name(id)
+                        director = lib.get_director(id)
+                        rating = lib.get_rating(id)
+                        play_count = lib.get_play_count(id)
+                        item = str(f"{id} {name} - {director} - Rating: {rating} - Plays: {play_count} \n")
+                        result_list.append((item))
                         break 
 
-            for LibraryItem in result_list:
-                id = LibraryItem['id']
-                name = lib.get_name(id)
-                director = lib.get_director(id)
-                rating = lib.get_rating(id)
-                play_count = lib.get_play_count(id)
-                video_details = f"{id} {name} - {director} - Rating: {rating} - Plays: {play_count}"
-                set_text(self.list_txt, video_details)
+            set_text(self.list_txt, result_list)
+
+            if not term:
+                error_msg = ("Please enter a valid search term")
+                set_text(self.list_txt, error_msg)
 
             self.status_lbl.configure(text="Search button was clicked!")
         #___________commands for clicking their corresponding button_____________#
         def play_btn_clicked(self):
             id = self.ID_input.get()
-            play_count = lib.get_play_count(id)
-            play_count += 1
+            lib.increment_play_count(id)
+            play_count1 = lib.get_play_count(id)
+            set_text(self.play_count_increment, play_count1)
             self.status_lbl.configure(text="Play button was clicked!")
 
         def add_btn_clicked(self):
@@ -128,6 +135,7 @@ class CreateVideolist():
         def clear_btn_clicked(self):
             self.playlist.delete("1.0", "end")
             self.videoplaylist.clear()
+            set_text(self.play_count_increment, '0')
             self.status_lbl.configure(text="Clear list button was clicked!")
 
         def list_videos_clicked(self):
