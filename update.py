@@ -124,7 +124,7 @@ class UpdateVideo():
             director = lib.get_director(key)
             playcount = lib.get_play_count(key)
             name = lib.get_name(key)
-            info = f"{name}\n{director}\nrating: {rating1}\nplays: {playcount}"
+            info = f"{name}\n{director}\nRating: {rating1}\nPlays: {playcount}"
             set_text(self.video_txt,info)
 
     def check_videos_clicked(self):
