@@ -8,6 +8,7 @@ library["03"] = LibraryItem("Casablanca", "Michael Curtiz", 2)
 library["04"] = LibraryItem("The Sound of Music", "Robert Wise", 1)
 library["05"] = LibraryItem("Gone with the Wind", "Victor Fleming", 3)
 library["06"] = LibraryItem("Music S.T.A.R.T!!", "Lantis", 5)
+library["07"] = LibraryItem("Love, Chunibyo & Other Delusions", "Torako", 5)
 
 
 def list_all():
