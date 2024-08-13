@@ -117,7 +117,7 @@ class UpdateVideo():
     #___________commands for clicking their corresponding button_____________#
     def displayupdate(self):
         key = self.ID_input.get()
-        new_rating = self.rating_input.get()
+        new_rating = int(self.rating_input.get())
         if new_rating is not None:
             lib.set_rating(key, new_rating)
             rating1 = lib.get_rating(key)
@@ -128,12 +128,12 @@ class UpdateVideo():
             set_text(self.video_txt,info)
 
     def check_videos_clicked(self):
-        key = self.ID_input.get()
-        name = lib.get_name(key)
+        index = self.ID_input.get()
+        name = lib.get_name(index)
         if name is not None:
-            director = lib.get_director(key)
-            playcount = lib.get_play_count(key)
-            rating = lib.get_rating(key)
+            director = lib.get_director(index)
+            playcount = lib.get_play_count(index)
+            rating = lib.get_rating(index)
             info = f"{name}\n{director}\nRating: {rating}\nPlays: {playcount}"
             set_text(self.video_txt,info)
 
