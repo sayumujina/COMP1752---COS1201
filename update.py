@@ -129,12 +129,12 @@ class UpdateVideo():
             set_text(self.video_txt,info)
 
     def check_videos_clicked(self):
-        index = self.ID_input.get()
-        name = lib.get_name(index)
+        key = self.ID_input.get()
+        name = lib.get_name(key)
         if name is not None:
-            director = lib.get_director(index)
-            playcount = lib.get_play_count(index)
-            rating = lib.get_rating(index)
+            director = lib.get_director(key)
+            playcount = lib.get_play_count(key)
+            rating = lib.get_rating(key)
             info = f"{name}\n{director}\nRating: {rating}\nPlays: {playcount}"
             set_text(self.video_txt,info)
 
