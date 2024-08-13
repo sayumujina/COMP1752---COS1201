@@ -19,7 +19,7 @@ class CreateVideolist():
         #___________window size_____________#
         def __init__(self,window):
             window.geometry("1140x580")
-            window.title("Create Your Playlist")
+            window.title("Create Video List")
             window.minsize(1140,580)
             window.maxsize(1140,580)
             self.videoplaylist=[]
