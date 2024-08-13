@@ -13,11 +13,6 @@ def set_text(text_area, content):
     
 def add_text(text_area, content):
     text_area.insert(1.0, content + "\n")  
-    
-def errorID():
-    messagebox.showwarning(title="Invlid ID", message="Please enter a valid ID")
-def errorDUP():
-    messagebox.showinfo(title="Duplicate found", message="The video has already been added")
 
 #___________GUI_____________#
 class CreateVideolist():
@@ -127,17 +122,18 @@ class CreateVideolist():
         def add_btn_clicked(self):
             key = self.ID_input.get()
             name = lib.get_name(key)
-            x = key
-            if x not in self.videoplaylist:
+            if key not in self.videoplaylist:
                 self.videoplaylist.append(key)
                 print (*self.videoplaylist)
                 if name is not None:
                     addname=f"{name}"
                     add_text(self.playlist,addname)
                 else:
-                    errorID()
-            elif x in self.videoplaylist:
-                errorDUP()
+                    error_msg = ("Please enter a valid ID")
+                    set_text(self.list_txt, error_msg)
+            elif key in self.videoplaylist:
+                error_msg = ("Duplicate video")
+                set_text(self.list_txt, error_msg)
             self.status_lbl.configure(text="Add video button was clicked!")
                 
         def clear_btn_clicked(self):
