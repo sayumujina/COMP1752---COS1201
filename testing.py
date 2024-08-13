@@ -1,35 +1,42 @@
-from tkinter import *
+import unittest
+from library_item import LibraryItem
 
-root = Tk()
+class TestLibraryItem(unittest.TestCase):
+    
+    #___________test "info" without provided rating_____________#
+    def test_info_with_no_rating(self):
+        item = LibraryItem(name="Love, Chunibyo & Other Delusions", director="Torako")
+        self.assertEqual(item.info(), "Torako - Love, Chunibyo & Other Delusions")
 
-def retrieve(index):    
-    global values
-    if index == 'all':
-        for value in values:
-            print(value.get())
-    else:
-        print(values[index].get())
+    #___________test "info" with provided rating_____________#    
+    def test_info_with_rating(self):
+        item = LibraryItem(name="Love, Chunibyo & Other Delusions", director="Torako", rating=3)
+        self.assertEqual(item.info(), "Torako - Love, Chunibyo & Other Delusionso ***")
 
-values = []
-def saveClear():
-    global entry_list, values
-    list_var = Variable()
-    listbox = Listbox(root, listvariable = list_var)
-    for entry in entry_list:
-        listbox.insert(END,entry.get())
-        entry.set('')
-    values.append(list_var)
-    listbox.pack(padx = 10, pady = 10)
+    #___________test "stars" without provided rating_____________# 
+    def test_stars_with_no_rating(self):
+        item = LibraryItem(name="Love, Chunibyo & Other Delusions", director="Torako")
+        self.assertEqual(item.stars(), "")
 
-entry_list = []
-for _ in range(5):
-    ent_var = StringVar()
-    entry = Entry(root, textvariable = ent_var)
-    entry_list.append(ent_var)
-    entry.pack(padx = 10, pady = 10)
+    #___________test "stars" with provided rating_____________# 
+    def test_stars_with_rating(self):
+        item = LibraryItem(name="Love, Chunibyo & Other Delusions", director="Torako", rating=5)
+        self.assertEqual(item.stars(), "*****")
 
-but = Button(root, text = 'Save and Clear', command = saveClear)
-but.pack(padx = 10, pady = 10)
+    #___________test if "play_count" begins at the correct value_____________# 
+    def test_play_count(self):
+        item = LibraryItem(name="Love, Chunibyo & Other Delusions", director="Torako", play_count=10)
+        self.assertEqual(item.play_count, 10)
 
-root.mainloop()
-retrieve('all') #OR specify the index that you wish to retrieve
+    #___________test if "key" is assiged "None" by default_____________# 
+    def test_key_default_none(self):
+        item = LibraryItem(name="Love, Chunibyo & Other Delusions", director="Torako")
+        self.assertIsNone(item.key)
+
+    #___________test if "key" is retrieved correctly_____________# 
+    def test_key_assignment(self):
+        item = LibraryItem(name="Love, Chunibyo & Other Delusions", director="Torako", key="anything")
+        self.assertEqual(item.key, "anything")
+
+if __name__ == '__main__':
+    unittest.main()
