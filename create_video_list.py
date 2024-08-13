@@ -120,7 +120,7 @@ class CreateVideolist():
             self.status_lbl.configure(text="Play button was clicked!")
 
         def add_btn_clicked(self):
-            key = self.ID_input.get()
+            key = self.ID_input.get().strip()
             name = lib.get_name(key)
             if key not in self.videoplaylist:
                 self.videoplaylist.append(key)
@@ -129,11 +129,8 @@ class CreateVideolist():
                     addname=f"{name}"
                     add_text(self.playlist,addname)
                 else:
-                    error_msg = ("Please enter a valid ID")
+                    error_msg = ("Invalid video")
                     set_text(self.list_txt, error_msg)
-            elif key in self.videoplaylist:
-                error_msg = ("Duplicate video")
-                set_text(self.list_txt, error_msg)
             self.status_lbl.configure(text="Add video button was clicked!")
                 
         def clear_btn_clicked(self):
