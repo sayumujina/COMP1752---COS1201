@@ -117,6 +117,7 @@ class UpdateVideo():
         
     #___________commands for clicking their corresponding button_____________#
     def displayupdate(self):
+        self.status_lbl.configure(text="Update button was clicked!")
         key = self.ID_input.get()
         new_rating = int(self.rating_input.get())
         if new_rating is not None:
@@ -127,7 +128,7 @@ class UpdateVideo():
             name = lib.get_name(key)
             info = f"{name}\n{director}\nRating: {rating1}\nPlays: {playcount}"
             set_text(self.video_txt,info)
-        self.status_lbl.configure(text="Update button was clicked!")
+       
 
     def check_videos_clicked(self):
         key = self.ID_input.get()
