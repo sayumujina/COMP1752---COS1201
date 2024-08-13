@@ -98,11 +98,12 @@ class UpdateVideo():
                     director = lib.get_director(id)
                     rating = lib.get_rating(id)
                     play_count = lib.get_play_count(id)
-                    item = str(f"{id} {name} - {director} - Rating: {rating} - Plays: {play_count} \n")
+                    item = f"{id} {name} - {director} - Rating: {rating} - Plays: {play_count} \n"
                     result_list.append((item))
                     break 
 
-        set_text(self.list_txt, result_list)
+        result_list_text = ''.join(result_list)
+        set_text(self.list_txt, result_list_text)
 
         if not term:
             error_msg = ("Please enter a valid search term")
