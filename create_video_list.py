@@ -21,6 +21,7 @@ def errorDUP():
 
 #___________GUI_____________#
 class CreateVideolist():
+        #___________window size_____________#
         def __init__(self,window):
             window.geometry("1140x580")
             window.title("Create Your Playlist")
@@ -28,12 +29,14 @@ class CreateVideolist():
             window.maxsize(1140,580)
             self.videoplaylist=[]
 
+            #___________video list interface_____________#
             self.list_txt = tkst.ScrolledText(window, width=60, height=9, wrap="none")
             self.list_txt.place(x=10, y=10)
 
             list_videos_btn= tk.Button(window, text="List All Videos", command=self.list_videos_clicked)
             list_videos_btn.place(x=13, y=228)
 
+            #___________video search interface_____________#
             self.search_input = Entry(window, width=21)
             self.search_input.place(x=230, y=295)
         
@@ -43,12 +46,14 @@ class CreateVideolist():
             self.search_button = Button(window, text="Search", command=self.search_clicked)
             self.search_button.place(x=485, y=290)
             
+            #___________check video ID interface_____________#
             self.Video_ID = Label(window,text="Enter video number")
             self.Video_ID.place(x=10, y=353)
             
             self.ID_input = Entry(window, width=17)
             self.ID_input.place(x=245, y=358)
             
+            #___________add, delete and play the playlist_____________#
             self.add_video = Button(window,text="Add Video",command=self.add_btn_clicked)
             self.add_video.place(x=449, y=350)
             
@@ -58,12 +63,14 @@ class CreateVideolist():
             self.play_count_increment = Text(window, width=3, height=1, wrap="none")
             self.play_count_increment.place(x=450, y=470)
 
+            #___________playlist box_____________#
             self.playlist = tkst.ScrolledText(window, width=18, height=9, wrap="none")
             self.playlist.place(x=598, y=290)
 
             self.play_btn = Button(window,text="Play",command=self.play_btn_clicked)
             self.play_btn.place(x=515, y=470)
 
+            #___________status label_____________#
             self.status_lbl = tk.Label(window, text="", font=("Helvetica", 10))
             self.status_lbl.place(x=900, y=10)
 
@@ -97,11 +104,12 @@ class CreateVideolist():
                         director = lib.get_director(id)
                         rating = lib.get_rating(id)
                         play_count = lib.get_play_count(id)
-                        item = str(f"{id} {name} - {director} - Rating: {rating} - Plays: {play_count} \n")
+                        item = f"{id} {name} - {director} - Rating: {rating} - Plays: {play_count} \n"
                         result_list.append((item))
                         break 
 
-            set_text(self.list_txt, result_list)
+            result_list_text = ''.join(result_list)
+            set_text(self.list_txt, result_list_text)
 
             if not term:
                 error_msg = ("Please enter a valid search term")
